@@ -77,8 +77,7 @@ def word_freq(wordOne, wordTwo, filename):
     plt.ylabel("Total Number of Occurrences")
     plt.xlabel("Rank of word(\"" + wordOne + "\" is rank " + str(wordOne_rank) + ")" 
     + "\n" + "Rank of word(\"" + wordTwo + "\" is rank " + str(wordTwo_rank) + ")")
-
-  #  print(just_the_rank)
+    
     plt.loglog(just_the_rank, just_the_occur, basex=10)
     # First word
     plt.scatter(

@@ -15,7 +15,6 @@ def main():
         "-l",
         "--lowercase",
         help="translate words to the lowercase",
-        default="true"
     )
 
     args = parser.parse_args()
@@ -26,7 +25,7 @@ def main():
         sys.stderr.write("Error: " + args.filename + " does not exist!")
         sys.exit(1)
 
-    parse_file(args.filename, -l)
+    parse_file(args.filename, args.lowercase)
 
 def parse_file(filename, lowercaseArg):
     # Create 'output' directory inside current
@@ -38,7 +37,7 @@ def parse_file(filename, lowercaseArg):
     with open(filename, 'r', encoding="utf-8") as in_file:
         # Russian text
         for text in re.findall(r"[а-яА-яёЁ]+", in_file.read()):
-            if (lowercaseArg == true):
+            if (lowercaseArg):
                 with open("output/output_lwc.txt", 'a', encoding="utf-8") as out_file:
                     # Write lowercase word to the file
                     out_file.write(text.lower() + " ")
@@ -52,7 +51,7 @@ def parse_file(filename, lowercaseArg):
         
         # English text
         for text in re.findall(r"[a-zA-z]+", in_file.read()):     
-            if (lowercaseArg == true):
+            if (lowercaseArg):
                 with open("output/output_lwc.txt", 'a', encoding="utf-8") as out_file:
                     # Write lowercase word to the file
                     out_file.write(text.lower() + " ")
