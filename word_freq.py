@@ -37,7 +37,7 @@ def word_freq(wordArg, filename):
 
     for line in open(filename, 'r', encoding="utf-8"):
         wordlist = line.split(' ')
-
+        
         for entry in wordlist:
             if (doc.__contains__(entry)):
                 doc[entry] = int(doc.get(entry)) + 1
@@ -52,12 +52,12 @@ def word_freq(wordArg, filename):
     entry_word = 1
 
     for i, word in enumerate(wordArg):
-        if (wordArg[i] not in doc):
+        if wordArg[i] not in str(doc):            
             sys.stderr.write("Error: " + wordArg[i] + " does not appear in " + filename)
             sys.exit(1)
-        
+            
         for entry in sorted_doc:
-            if(entry[0] == wordArg[i]):
+            if entry[0] in wordArg[i]:
                 word_rank = entry_word
                 word_frequency = entry[1]
                 
