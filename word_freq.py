@@ -3,6 +3,10 @@ import matplotlib.pyplot as plt
 import operator
 import argparse
 
+class Counter(dict):
+    def __missing__(self, key):
+        return 0
+
 # Get the first cmd line arg
 def main():
     parser = argparse.ArgumentParser()
@@ -45,35 +49,39 @@ def word_freq(wordArg, filename):
                 doc[entry] = 1
 
     sorted_doc = (sorted(doc.items(), key = operator.itemgetter(1)))[::-1]
+  
     just_the_occur = []
     just_the_rank = []
-    word_rank = 0
-    word_frequency = 0
+  
+    word_frequency = Counter()
+    word_rank = Counter()
+
     entry_word = 1
 
     for i, word in enumerate(wordArg):
-        if wordArg[i] not in str(doc):            
-            sys.stderr.write("Error: " + wordArg[i] + " does not appear in " + filename)
+        if word not in str(doc):            
+            sys.stderr.write("Error: " + word + " does not appear in " + filename)
             sys.exit(1)
-            
+        
         for entry in sorted_doc:
-            if entry[0] in wordArg[i]:
-                word_rank = entry_word
-                word_frequency = entry[1]
-                
-            just_the_rank.append(entry_word)
-            entry_word += 1
-            just_the_occur.append(entry[1])
+            if word in entry[0]:
+                word_rank[word] = entry_word
+                word_frequency[word] += entry[1]
 
+            just_the_occur.append(entry[1])
+            entry_word += 1
+            just_the_rank.append(entry_word)
+          
         plt.scatter(
-            [word_rank],
-            [word_frequency],
+            [word_rank[word]],
+            [word_frequency[word]],
             color="r",
-            marker=r"$ {} $".format(wordArg[i]),
-            s=1000,
-            label=wordArg[i]
+            marker=r"$ {}, {} $".format(word, word_frequency[word]),
+            s=5000,
+            label=word
         )
-        plt.loglog(just_the_rank, just_the_occur, basex=10)    
+        
+        plt.loglog(just_the_rank, just_the_occur, basex=10) 
 
     plt.title("Word Frequencies in " + filename)
     plt.ylabel("Total Number of Occurrences")    
